@@ -4,7 +4,9 @@
     'website': '',
     'version': '19.0.0',
     'description': 'This is my first System',
-    'data': [
-        'views/hms_patient_views.xml'
-    ]
+    "data": [
+        "views/patient_views.xml",
+        "views/department_views.xml",
+        "views/doctor_views.xml",
+    ],
 }
