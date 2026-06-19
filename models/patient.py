@@ -1,13 +1,18 @@
+import re
 from odoo import models, fields, api
-
+from odoo.exceptions import ValidationError
 class HmsPatient(models.Model):
     _name = "hms.patient"
     _description = "Hospital Patient"
     _rec_name = "first_name"
 
+    _sql_constraints = [
+        ('unique_patient_email', 'UNIQUE(email)', 'The email address must be unique for each patient!')
+    ]
+
     first_name = fields.Char(string="First Name", required=True)
     last_name = fields.Char(string="Last Name", required=True)
-
+    email = fields.Char(string="Email")
     birth_date = fields.Date(string="Birth Date")
     history = fields.Html(string="History")
 
@@ -77,3 +82,16 @@ class HmsPatient(models.Model):
               self.log_ids += self.env['hms.patient.log'].new({
                   'description': f'State changed to {self.state}'
               })
+
+
+    @api.constrains('email')
+    def _check_valid_email(self):
+        for rec in self:
+            if rec.email:
+                email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                if not re.match(email_regex, rec.email):
+                    raise ValidationError("Invalid Email Address! Please enter a valid email format (e.g., example@domain.com).")
+                
+                duplicate_email = self.search([('email', '=', rec.email), ('id', '!=', rec.id)])
+                if duplicate_email:
+                    raise ValidationError("The email address must be unique for each patient!")

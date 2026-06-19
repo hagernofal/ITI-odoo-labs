@@ -6,6 +6,7 @@
         <list>
             <field name="first_name"/>
             <field name="last_name"/>
+            <field name="email"/>
             <field name="department_id"/>
             <field name="department_capacity"/>
             <field name="state"/>
@@ -28,6 +29,7 @@
                             <field name="last_name"/>
                             <field name="birth_date"/>
                             <field name="age"/>
+                            <field name="email"/>
                         </group>
 
                         <group>
