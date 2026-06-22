@@ -6,9 +6,12 @@
     'description': 'This is my first System',
     'depends': ['crm', 'base'],
     "data": [
+        "security/hms_security.xml",
+        "security/ir.model.access.csv",
         "views/patient_views.xml",
         "views/department_views.xml",
         "views/doctor_views.xml",
         "views/res_partner_views.xml",
+        "report/patient_report.xml",
     ],
 }

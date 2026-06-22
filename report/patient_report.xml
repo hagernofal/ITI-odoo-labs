@@ -1,0 +1,80 @@
+<odoo>
+    <record id="action_report_patient_status" model="ir.actions.report">
+        <field name="name">Patient Status Report</field>
+        <field name="model">hms.patient</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hms.report_patient_status_template</field>
+        <field name="report_file">hms.report_patient_status_template</field>
+        <field name="print_report_name">'Patient_Report_%s' % (object.first_name)</field>
+        <field name="binding_model_id" ref="model_hms_patient"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_patient_status_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; border: 2px solid #0056b3; padding: 20px; border-radius: 5px;">
+                        
+                        <div class="row align-items-center" style="border-bottom: 2px solid #0056b3; padding-bottom: 15px; margin-bottom: 20px;">
+                            <div class="col-8">
+                                <h1 style="color: #e04a4a; font-weight: bold; font-size: 38px; margin: 0;">Patient Status Report</h1>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span t-if="doc.image">
+                                    <img t-att-src="image_data_uri(doc.image)" style="max-height: 120px; max-width: 120px; border: 1px solid #ccc;"/>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="font-size: 16px; line-height: 1.8; margin-bottom: 30px;">
+                            <div class="col-6">
+                                <div><strong>Name:</strong> <span t-field="doc.first_name"/> <span t-field="doc.last_name"/></div>
+                                <div><strong>Age:</strong> <span t-field="doc.age"/></div>
+                                <div><strong>Department:</strong> <span t-field="doc.department_id.name"/></div>
+                                <div>
+                                    <strong>Doctors:</strong> 
+                                    <span t-foreach="doc.doctor_ids" t-as="doc_user">
+                                        <span t-field="doc_user.name"/>, 
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div><strong>Birth date:</strong> <span t-field="doc.birth_date"/></div>
+                                <div><strong>PCR:</strong> <span t-field="doc.pcr"/></div>
+                                <div><strong>Blood Type:</strong> <span t-field="doc.blood_type"/></div>
+                                <div><strong>Email:</strong> <span t-field="doc.email"/></div>
+                            </div>
+                        </div>
+
+                        <div class="text-center" style="margin-top: 20px;">
+                            <h3 style="color: #e04a4a; font-weight: bold; margin-bottom: 15px;">Log History</h3>
+                            <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background-color: #007bff; color: white; text-align: left;">
+                                        <th style="padding: 10px; border: 1px solid #dee2e6;">User</th>
+                                        <th style="padding: 10px; border: 1px solid #dee2e6;">Date</th>
+                                        <th style="padding: 10px; border: 1px solid #dee2e6;">Info</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.log_ids" t-as="log" style="background-color: #e6f0ff; text-align: left;">
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;"><span t-field="log.created_by.name"/></td>
+                                        
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;"><span t-field="log.log_date"/></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;"><span t-field="log.description"/></td>
+                                    </tr>
+                                    <t t-if="not doc.log_ids">
+                                        <tr style="background-color: #e6f0ff; height: 40px;"><td/><td/><td/></tr>
+                                        <tr style="background-color: #e6f0ff; height: 40px;"><td/><td/><td/></tr>
+                                    </t>
+</tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
