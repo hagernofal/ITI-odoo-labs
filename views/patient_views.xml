@@ -36,8 +36,10 @@
                             <field name="department_id"/>
                             <field name="department_capacity"/>
 
-                            <field name="doctor_ids"  readonly="department_id == False"
-                                widget="many2many_tags"/>
+                            <field name="doctor_ids" 
+                            readonly="department_id == False" 
+                            widget="many2many_tags" 
+                            groups="hms.group_hms_manager"/>
                         </group>
                     </group>
 
@@ -94,4 +96,11 @@
             name="Patients"
             parent="menu_hms_root"
             action="action_hms_patient" sequence="1"/>
+
+    <menuitem id="menu_hms_doctor" 
+            name="Doctors" 
+            parent="menu_hms_root" 
+            action="action_hms_doctor" 
+            sequence="2" 
+            groups="hms.group_hms_manager"/>
 </odoo>
